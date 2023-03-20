@@ -52,5 +52,10 @@ class ListTest:
     assertEquals(-60, foldLeft(l)(0)(_-_))
     assertEquals(0, foldLeft(Nil[Int]())(0)(_+_))
 
+  @Test def testFoldRight() =
+    assertEquals(60, foldRight(l)(0)(_+_))
+    assertEquals(20, foldRight(l)(0)(_-_))
+    assertEquals(0, foldRight(Nil[Int]())(0)(_+_))
+
 
 
