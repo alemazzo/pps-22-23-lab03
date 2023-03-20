@@ -3,6 +3,8 @@ package u03
 import org.junit.*
 import org.junit.Assert.*
 import Lists.*
+import u02.Modules.Person
+import u02.Modules.Person.{Student, Teacher}
 import u02.Optionals.Option.{None, Some}
 
 class ListTest:
@@ -40,6 +42,11 @@ class ListTest:
   @Test def testMax() =
     assertEquals(Some(30), max(l))
     assertEquals(None(), max(Nil()))
+
+  @Test def testPeopleToCourses() =
+    val list = Cons(Teacher("Mirko", "OOP"), Cons(Student("Alessandro", 2000), Cons(Teacher("Gianluca", "PPS"), Nil())))
+    assertEquals(Cons("OOP", Cons("PPS", Nil())), peopleToCourses(list))
+
 
 
 

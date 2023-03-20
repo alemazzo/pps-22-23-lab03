@@ -1,5 +1,7 @@
 package u03
 
+import u02.Modules.Person
+import u02.Modules.Person.Teacher
 import u02.Optionals.Option
 import u02.Optionals.Option.*
 
@@ -48,6 +50,11 @@ object Lists extends App :
         case None() => Some(h)
         case Some(a) => Some(Integer.max(h, a))
       case Nil() => None()
+
+    def peopleToCourses(l: List[Person]): List[String] = flatMap(l)(_ match
+      case Teacher(_, c) => Cons(c, Nil())
+      case _ => Nil()
+    )
 
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
