@@ -1,5 +1,8 @@
 package u03
 
+import u02.Optionals.Option
+import u02.Optionals.Option.*
+
 import scala.annotation.tailrec
 
 object Lists extends App :
@@ -40,7 +43,11 @@ object Lists extends App :
       case Cons(_, t) => flatMap(t)(x => if(pred(x)) Cons(x, Nil()) else Nil())
       case Nil() => Nil()
 
-    
+    def max(l: List[Int]): Option[Int] = l match
+      case Cons(h, t) => max(t) match
+        case None() => Some(h)
+        case Some(a) => Some(Integer.max(h, a))
+      case Nil() => None()
 
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
