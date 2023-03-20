@@ -47,6 +47,10 @@ class ListTest:
     val list = Cons(Teacher("Mirko", "OOP"), Cons(Student("Alessandro", 2000), Cons(Teacher("Gianluca", "PPS"), Nil())))
     assertEquals(Cons("OOP", Cons("PPS", Nil())), peopleToCourses(list))
 
+  @Test def testFoldLeft() =
+    assertEquals(60, foldLeft(l)(0)(_+_))
+    assertEquals(-60, foldLeft(l)(0)(_-_))
+    assertEquals(0, foldLeft(Nil[Int]())(0)(_+_))
 
 
 
