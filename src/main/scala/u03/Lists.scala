@@ -15,10 +15,6 @@ object Lists extends App :
       case Cons(h, t) => h + sum(t)
       case _ => 0
 
-    def filter[A](l1: List[A])(pred: A => Boolean): List[A] = l1 match
-      case Cons(h, t) if pred(h) => Cons(h, filter(t)(pred))
-      case Cons(_, t) => filter(t)(pred)
-      case Nil() => Nil()
 
     @tailrec
     def drop[A](l: List[A], n: Int): List[A] = (l, n) match
@@ -38,6 +34,13 @@ object Lists extends App :
     def map[A, B](l: List[A])(mapper: A => B): List[B] = l match
       case Cons(h, t) => Cons(mapper(h), flatMap(t)(x => Cons(mapper(x), Nil())))
       case Nil() => Nil()
+
+    def filter[A](l1: List[A])(pred: A => Boolean): List[A] = l1 match
+      case Cons(h, t) if pred(h) => Cons(h, filter(t)(pred))
+      case Cons(_, t) => flatMap(t)(x => if(pred(x)) Cons(x, Nil()) else Nil())
+      case Nil() => Nil()
+
+    
 
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
