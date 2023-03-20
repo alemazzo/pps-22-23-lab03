@@ -27,4 +27,10 @@ class ListTest:
     assertEquals(Nil(), drop(l, 4))
     assertEquals(Nil(), drop(l, -2))
 
+  @Test def testAppend() =
+    assertEquals(Cons(10, Cons(20, Cons(30, Cons(40, Nil())))), append(l, Cons(40, Nil())))
+    assertEquals(Cons(10, Cons(20, Cons(30, Nil()))), append(l, Nil()))
+    assertEquals(Cons(40, Nil()), append(Nil(), Cons(40, Nil())))
+
+
 
