@@ -22,6 +22,12 @@ object Lists extends App :
       case Cons(_, t) => filter(t)(pred)
       case Nil() => Nil()
 
+    def drop[A](l: List[A], n: Int): List[A] = (l, n) match
+      case (l, 0) => l
+      case (Cons(_, t), i) => drop(t, i - 1)
+      case _ => Nil()
+
+
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
 
