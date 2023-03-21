@@ -20,7 +20,6 @@ object Lists extends App :
       case Cons(h, t) => h + sum(t)
       case _ => 0
 
-
     @tailrec
     def drop[A](l: List[A], n: Int): List[A] = (l, n) match
       case (l, 0) => l
