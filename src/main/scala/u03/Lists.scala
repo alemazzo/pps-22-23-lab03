@@ -20,21 +20,6 @@ object Lists extends App :
       case Cons(h, t) => h + sum(t)
       case _ => 0
 
-    @tailrec
-    def drop[A](l: List[A], n: Int): List[A] = (l, n) match
-      case (l, 0) => l
-      case (Cons(_, t), i) => drop(t, i - 1)
-      case _ => Nil()
-
-    def append[A](left: List[A], right: List[A]): List[A] = (left, right) match
-      case (Nil(), r) => r
-      case (Cons(h, Nil()), r) => Cons(h, r)
-      case (Cons(h, t), r) => Cons(h, append(t, r))
-
-    def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match
-      case Nil() => Nil()
-      case Cons(h, t) => append(f(h), flatMap(t)(f))
-
     def map[A, B](l: List[A])(mapper: A => B): List[B] = l match
       case Nil() => Nil()
       case Cons(h, t) => Cons(mapper(h), map(t)(mapper))
