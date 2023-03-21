@@ -36,32 +36,12 @@ object Lists extends App :
       case Cons(h, t) => append(f(h), flatMap(t)(f))
 
     def map[A, B](l: List[A])(mapper: A => B): List[B] = l match
-      case Cons(h, t) => Cons(mapper(h), flatMap(t)(x => Cons(mapper(x), Nil())))
       case Nil() => Nil()
+      case Cons(h, t) => Cons(mapper(h), map(t)(mapper))
 
     def filter[A](l1: List[A])(pred: A => Boolean): List[A] = l1 match
-      case Cons(h, t) if pred(h) => Cons(h, filter(t)(pred))
-      case Cons(_, t) => flatMap(t)(x => if(pred(x)) Cons(x, Nil()) else Nil())
       case Nil() => Nil()
-
-    def max(l: List[Int]): Option[Int] = l match
-      case Cons(h, t) => max(t) match
-        case None() => Some(h)
-        case Some(a) => Some(Integer.max(h, a))
-      case Nil() => None()
-
-    def peopleToCourses(l: List[Person]): List[String] = flatMap(l)(_ match
-      case Teacher(_, c) => Cons(c, Nil())
-      case _ => Nil()
-    )
-
-    def foldLeft[A, B](l: List[A])(d: B)(f: (B, A) => B): B = l match
-      case Cons(h, t) => foldLeft(t)(f(d, h))(f)
-      case Nil() => d
-
-    def foldRight[A, B](l: List[A])(d: B)(f: (A, B) => B): B = l match
-      case Cons(h, t) => f(h, foldRight(t)(d)(f))
-      case Nil() => d
+      case Cons(h, t) => if pred(h) then Cons(h, filter(t)(pred)) else filter(t)(pred)
 
 
 
