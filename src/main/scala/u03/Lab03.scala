@@ -124,4 +124,8 @@ object Lab03 {
       case (Cons(_, tail), n) if n > 0 => drop(tail())(n - 1)
       case _ => Empty()
 
+    // 6. Stream Constant
+
+    def constant[A](a: => A): Stream[A] = iterate(a)(x => x)
+
 }

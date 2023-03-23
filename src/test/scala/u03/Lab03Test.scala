@@ -82,4 +82,10 @@ class Lab03Test {
     assertEquals(Cons(2, Cons(3, Cons(4, Nil()))), Stream.toList(Stream.take(Stream.drop(stream)(2))(3)))
     assertEquals(Nil(), Stream.toList(Stream.take(Stream.drop(stream)(2))(0)))
     assertEquals(Nil(), Stream.toList(Stream.take(Stream.drop(stream)(2))(-1)))
+
+  @Test def testStreamConstant() =
+    assertEquals(Cons(3, Cons(3, Cons(3, Nil()))), Stream.toList(Stream.take(Stream.constant(3))(3)))
+    assertEquals(Nil(), Stream.toList(Stream.take(Stream.constant(3))(0)))
+    assertEquals(Nil(), Stream.toList(Stream.take(Stream.constant(3))(-1)))
+    
 }
