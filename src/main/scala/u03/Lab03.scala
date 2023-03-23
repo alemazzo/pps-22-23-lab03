@@ -128,4 +128,10 @@ object Lab03 {
 
     def constant[A](a: => A): Stream[A] = iterate(a)(x => x)
 
+    // 7. Stream Fibonacci
+
+    def fibonacci(): Stream[Int] =
+      def fib(a: Int, b: Int): Stream[Int] = cons(a, fib(b, a + b))
+      fib(0, 1)
+
 }

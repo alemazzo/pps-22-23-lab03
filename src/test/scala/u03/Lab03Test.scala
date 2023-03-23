@@ -87,5 +87,10 @@ class Lab03Test {
     assertEquals(Cons(3, Cons(3, Cons(3, Nil()))), Stream.toList(Stream.take(Stream.constant(3))(3)))
     assertEquals(Nil(), Stream.toList(Stream.take(Stream.constant(3))(0)))
     assertEquals(Nil(), Stream.toList(Stream.take(Stream.constant(3))(-1)))
-    
+
+
+  @Test def testStreamFibonacci() =
+    assertEquals(Cons(0, Cons(1, Cons(1, Cons(2, Cons(3, Cons(5, Cons(8, Cons(13, Nil())))))))), Stream.toList(Stream.take(Stream.fibonacci())(8)))
+    assertEquals(Nil(), Stream.toList(Stream.take(Stream.fibonacci())(0)))
+    assertEquals(Nil(), Stream.toList(Stream.take(Stream.fibonacci())(-1)))
 }
