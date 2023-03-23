@@ -6,6 +6,7 @@ import u03.Lab03.List
 import u03.Lab03.List.*
 import u03.Lab03.Person
 import u03.Lab03.Person.*
+import u03.Lab03.Stream;
 import u02.Optionals.Option
 import u02.Optionals.Option.{Some, None}
 
@@ -45,6 +46,7 @@ class Lab03Test {
     assertEquals(Cons(10, Cons(30, Nil())), filter(l)(_ != 20))
     assertEquals(Nil(), filter(l)(_ > 30))
     assertEquals(Nil(), filter(Nil[Int]())(_ > 30))
+    assertEquals(Cons(10, Cons(30, Nil())), filter(l)(_ != 20))
 
   @Test def testMax() =
     assertEquals(Some(30), max(l))
@@ -61,9 +63,23 @@ class Lab03Test {
     assertEquals(-60, foldLeft(l)(0)(_ - _))
     assertEquals(0, foldLeft(Nil[Int]())(0)(_ + _))
 
+  @Test def testReverse() =
+    assertEquals(Cons(30, Cons(20, Cons(10, Nil()))), reverse(l))
+    assertEquals(Nil(), reverse(Nil[Int]()))
+    assertEquals(Cons(10, Nil()), reverse(Cons(10, Nil())))
+    assertEquals(l, reverse(reverse(l)))
+
   @Test def testFoldRight() =
     assertEquals(60, foldRight(l)(0)(_ + _))
     assertEquals(20, foldRight(l)(0)(_ - _))
     assertEquals(0, foldRight(Nil[Int]())(0)(_ + _))
+    val list = Cons(3, Cons(7, Cons(1, Cons(5, Nil()))))
+    assertEquals(-8, foldRight(list)(0)(_ - _))
 
+
+  @Test def testStreamDrop() =
+    val stream = Stream.iterate(0)(_ + 1)
+    assertEquals(Cons(2, Cons(3, Cons(4, Nil()))), Stream.toList(Stream.take(Stream.drop(stream)(2))(3)))
+    assertEquals(Nil(), Stream.toList(Stream.take(Stream.drop(stream)(2))(0)))
+    assertEquals(Nil(), Stream.toList(Stream.take(Stream.drop(stream)(2))(-1)))
 }

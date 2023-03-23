@@ -2,7 +2,10 @@ package u03
 
 import scala.annotation.tailrec
 import u02.Optionals.Option
-import u02.Optionals.Option.{Some, None}
+import u02.Optionals.Option.{None, Some}
+
+import java.util
+import java.util.Collections
 
 object Lab03 {
 
@@ -16,15 +19,15 @@ object Lab03 {
 
     @tailrec
     def drop[A](l: List[A], n: Int): List[A] = (l, n) match
-      case (Cons(h, t), 0) => Cons(h, t)
+      case (l, 0) => l
       case (Cons(_, t), n) => drop(t, n-1)
       case _ => Nil()
 
     // 1b. Append
 
-    def append[A](left: List[A], right: List[A]): List[A] = left match
-      case Nil() => right
-      case Cons(h, t) => Cons(h, append(t, right))
+    def append[A](l: List[A], r: List[A]): List[A] = l match
+      case Nil() => r
+      case Cons(h, t) => Cons(h, append(t, r))
 
     // 1c. Flatmap
 
@@ -58,8 +61,11 @@ object Lab03 {
       case Nil() => b
       case Cons(h, t) => foldLeft(t)(op(b, h))(op)
 
+    def reverse[A](l: List[A]): List[A] =
+      foldLeft(l)(Nil(): List[A])((acc, h) => Cons(h, acc))
+
     def foldRight[A, B](l: List[A])(b: B)(op: (A, B) => B): B =
-      foldLeft(l)(b)((b, a) => op(a, b))
+      foldLeft(reverse(l))(b)((acc, h) => op(h, acc))
 
   // 3. People to Courses
 
@@ -76,5 +82,46 @@ object Lab03 {
         case Student(_, _) => Nil()
         case Teacher(_, c) => Cons(c, Nil())
       )
+
+  // Streams
+  enum Stream[A]:
+    private case Empty()
+    private case Cons(head: () => A, tail: () => Stream[A])
+
+  object Stream:
+
+    def empty[A](): Stream[A] = Empty()
+
+    def cons[A](hd: => A, tl: => Stream[A]): Stream[A] =
+      lazy val head = hd
+      lazy val tail = tl
+      Cons(() => head, () => tail)
+
+    def toList[A](stream: Stream[A]): List[A] = stream match
+      case Cons(h, t) => List.Cons(h(), toList(t()))
+      case _ => List.Nil()
+
+    def map[A, B](stream: Stream[A])(f: A => B): Stream[B] = stream match
+      case Cons(head, tail) => cons(f(head()), map(tail())(f))
+      case _ => Empty()
+
+    def filter[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match
+      case Cons(head, tail) if (pred(head())) => cons(head(), filter(tail())(pred))
+      case Cons(head, tail) => filter(tail())(pred)
+      case _ => Empty()
+
+    def take[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
+      case (Cons(head, tail), n) if n > 0 => cons(head(), take(tail())(n - 1))
+      case _ => Empty()
+
+    def iterate[A](init: => A)(next: A => A): Stream[A] =
+      cons(init, iterate(next(init))(next))
+
+    // 5. Stream Drop
+
+    def drop[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
+      case (l, 0) => l
+      case (Cons(_, tail), n) if n > 0 => drop(tail())(n - 1)
+      case _ => Empty()
 
 }
