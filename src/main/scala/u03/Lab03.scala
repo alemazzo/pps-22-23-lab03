@@ -15,7 +15,7 @@ object Lab03 {
 
   object List:
 
-    // 1a. Drop
+    // 1a. Drop, svolto da solo
 
     @tailrec
     def drop[A](l: List[A], n: Int): List[A] = (l, n) match
@@ -23,19 +23,19 @@ object Lab03 {
       case (Cons(_, t), n) => drop(t, n-1)
       case _ => Nil()
 
-    // 1b. Append
+    // 1b. Append, svolto da solo
 
     def append[A](l: List[A], r: List[A]): List[A] = l match
       case Nil() => r
       case Cons(h, t) => Cons(h, append(t, r))
 
-    // 1c. Flatmap
+    // 1c. Flatmap, svolto da solo
 
     def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match
       case Nil() => Nil()
       case Cons(h, t) => append(f(h), flatMap(t)(f))
 
-    // 1d. Map & Filter (using flatMap)
+    // 1d. Map & Filter (using flatMap), svolto da solo
 
     def map[A, B](l: List[A])(f: A => B): List[B] =
       flatMap(l)(x => Cons(f(x), Nil()))
@@ -46,7 +46,7 @@ object Lab03 {
         case false => Nil()
       )
 
-    // 2. Max
+    // 2. Max, svolto da solo
 
     def max(l: List[Int]): Option[Int] = l match
       case Nil() => None()
@@ -54,7 +54,7 @@ object Lab03 {
         case None() => Some(h)
         case Some(m) => Some(h max m)
 
-    // 4. Fold left & right
+    // 4. Fold left & right, svolto da solo
 
     @tailrec
     def foldLeft[A, B](l: List[A])(b: B)(op: (B, A) => B): B = l match
@@ -67,7 +67,7 @@ object Lab03 {
     def foldRight[A, B](l: List[A])(b: B)(op: (A, B) => B): B =
       foldLeft(reverse(l))(b)((acc, h) => op(h, acc))
 
-  // 3. People to Courses
+  // 3. People to Courses, svolto da solo
 
   enum Person:
     case Student(name: String, year: Int)
@@ -117,18 +117,18 @@ object Lab03 {
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
 
-    // 5. Stream Drop
+    // 5. Stream Drop, svolto da solo
 
     def drop[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
       case (l, 0) => l
       case (Cons(_, tail), n) if n > 0 => drop(tail())(n - 1)
       case _ => Empty()
 
-    // 6. Stream Constant
+    // 6. Stream Constant, svolto da solo
 
     def constant[A](a: => A): Stream[A] = iterate(a)(x => x)
 
-    // 7. Stream Fibonacci
+    // 7. Stream Fibonacci, svolto da solo
 
     def fibonacci(): Stream[Int] =
       def fib(a: Int, b: Int): Stream[Int] = cons(a, fib(b, a + b))
